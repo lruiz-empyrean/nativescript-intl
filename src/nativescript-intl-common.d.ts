@@ -20,7 +20,7 @@ export declare class DateTimeFormat {
     private getDateElementsFromPattern(pattern);
     private prepareDateElement(intlOption, dateElement);
     private preparePattern(pattern, options);
-    formatNative(pattern: string, locale?: string, date?: Date): string;
+    formatNative(pattern: string, locale?: string, date?: Date, timeZoneName?: string): string;
     private _preparedPattern;
     readonly preparedPattern: string;
     format(date?: Date): string;

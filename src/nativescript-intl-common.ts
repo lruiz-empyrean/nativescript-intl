@@ -191,7 +191,7 @@ export class DateTimeFormat implements intlDateTimeFormat {
         return result.join("");
     }
 
-    public formatNative(pattern: string, locale?: string, date?: Date): string {
+    public formatNative(pattern: string, locale?: string, date?: Date, timeZoneName?: string): string {
         return "";
     }
 
@@ -213,7 +213,7 @@ export class DateTimeFormat implements intlDateTimeFormat {
     }
 
     public format(date?: Date): string {
-        return this.formatNative(this.preparedPattern, this.locale, date);
+        return this.formatNative(this.preparedPattern, this.locale, date, this.options?.timeZoneName);
     }
 }
 

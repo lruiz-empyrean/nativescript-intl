@@ -36,6 +36,16 @@ function getNativeLocale(locale?: string) {
     return result;
 }
 
+
+function getNativeTimeZone(timeZoneName?: string): java.util.TimeZone {
+    let timeZone: java.util.TimeZone;
+    if (timeZoneName) {
+        timeZone = java.util.TimeZone.getTimeZone(timeZoneName);
+    }
+    return timeZone;
+}
+
+
 export class DateTimeFormat extends commonDateTimeFormat {
     public getNativePattern(patternDefinition: {date?: string, time?: string}, locale?: string): string {
         let result = "";
@@ -96,10 +106,14 @@ export class DateTimeFormat extends commonDateTimeFormat {
         return result;
     }
 
-    public formatNative(pattern: string, locale?: string, date?: Date): string {
+    public formatNative(pattern: string, locale?: string, date?: Date, timeZoneName?: string): string {
         let sdf = locale ?
             new java.text.SimpleDateFormat(pattern, getNativeLocale(locale)) :
             new java.text.SimpleDateFormat(pattern);
+        const timeZone: java.util.TimeZone = getNativeTimeZone(timeZoneName);
+        if (timeZone) {
+            sdf.setTimeZone(timeZone);
+        }
         return sdf.format(date ? new java.util.Date(date.valueOf()) : new java.util.Date()).toString();
     }
 }

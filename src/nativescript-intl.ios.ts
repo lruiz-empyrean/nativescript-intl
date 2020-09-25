@@ -5,7 +5,16 @@ import {
 } from "./nativescript-intl-common";
 import { NumberFormatOptions } from "./nativescript-intl";
 
+function getNativeTimeZone(timeZoneName?: string): NSTimeZone {
+    let timeZone: NSTimeZone;
+    if (timeZoneName) {
+        timeZone = NSTimeZone.timeZoneWithName(timeZoneName);
+    }
+    return timeZone;
+}
+
 export class DateTimeFormat extends commonDateTimeFormat {
+
     public getNativePattern(patternDefinition: {date?: string, time?: string}, locale?: string): string {
         let dateFormatter = NSDateFormatter.new();
         if (locale) {
@@ -22,12 +31,16 @@ export class DateTimeFormat extends commonDateTimeFormat {
         return dateFormatter.dateFormat;
     }
 
-    public formatNative(pattern: string, locale?: string, date?: Date): string {
+    public formatNative(pattern: string, locale?: string, date?: Date, timeZoneName?: string): string {
         let dateFormatter = NSDateFormatter.new();
         if (locale) {
             dateFormatter.locale = NSLocale.alloc().initWithLocaleIdentifier(locale);
         }
         dateFormatter.dateFormat = pattern;
+        const timeZone: NSTimeZone = getNativeTimeZone(timeZoneName);
+        if (timeZone) {
+            dateFormatter.timeZone = timeZone;
+        }
         // return dateFormatter.stringFromDate(date ?
         // NSDate.dateWithTimeIntervalSince1970(date.valueOf()/1000) :
         // NSDate.new());
